@@ -1,3 +1,6 @@
+
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const authRouter = require("./routes/auth");
@@ -5,70 +8,63 @@ const pool = require("./db");
 
 const app = express();
 
-
-// =========================================================
-// MIDDLEWARE
-// =========================================================
-
 app.use(cors());
-
-// For Flutter / JSON requests
 app.use(express.json());
-
-// IMPORTANT:
-// For the HTML password-reset form sent from Gmail link
 app.use(express.urlencoded({ extended: true }));
 
-
-// =========================================================
-// AUTH ROUTES
-// =========================================================
-
+// Existing authentication routes
 app.use(authRouter);
 
-
-// =========================================================
-// TEST ROUTE
-// =========================================================
-
+// Health check
 app.get("/", (req, res) => {
-    res.send("Backend is running!");
+  res.status(200).send("ResQAI Backend is running!");
 });
 
+// Initialize database before accepting requests
+async function initializeDatabase() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id SERIAL PRIMARY KEY,
+      fullname TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `);
 
-// =========================================================
-// START SERVER
-// =========================================================
+  await pool.query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS phone TEXT
+  `);
 
-app.listen(5000, async () => {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS password_reset_tokens (
+      id SERIAL PRIMARY KEY,
+      user_id INTEGER NOT NULL
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+      token_hash TEXT NOT NULL,
+      expires_at TIMESTAMP NOT NULL,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `);
 
-    try {
+  console.log("Auth schema ready");
+}
 
-        await pool.query(`
-            CREATE TABLE IF NOT EXISTS users (
-                id SERIAL PRIMARY KEY,
-                fullname TEXT NOT NULL,
-                email TEXT UNIQUE NOT NULL,
-                password TEXT NOT NULL,
-                created_at TIMESTAMP DEFAULT NOW()
-            )
-        `);
+async function startServer() {
+  try {
+    await initializeDatabase();
 
-        await pool.query(`
-            ALTER TABLE users
-            ADD COLUMN IF NOT EXISTS phone TEXT;
-        `);
+    const PORT = process.env.PORT || 5000;
 
-        console.log("Database table 'users' is ready");
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`ResQAI backend running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Backend startup failed:", error.message);
+    process.exit(1);
+  }
+}
 
-    } catch (error) {
-
-        console.error(
-            "Failed to initialize the database:",
-            error
-        );
-
-    }
-
-    console.log("Server running on port 5000");
-});
+startServer();
