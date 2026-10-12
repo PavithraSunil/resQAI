@@ -1,0 +1,30 @@
+{
+  "threshold": 0.11,
+  "raw_features": [
+    "rainfall_24h_mm",
+    "rainfall_3d_mm",
+    "rainfall_7d_mm",
+    "rainfall_14d_mm",
+    "max_rainfall_3day_mm",
+    "soil_moisture_pct",
+    "river_level_m",
+    "river_distance_km",
+    "elevation_m",
+    "slope_deg"
+  ],
+  "engineered_features": [
+    "log_rainfall_24h_mm",
+    "log_rainfall_3d_mm",
+    "log_rainfall_7d_mm",
+    "log_rainfall_14d_mm",
+    "log_max_rainfall_3day_mm",
+    "soil_moisture_pct",
+    "river_level_m",
+    "log_river_distance_km",
+    "log_elevation_m",
+    "slope_deg",
+    "rain_burst_ratio",
+    "soil_x_rain3d"
+  ],
+  "model": "logreg"
+}
