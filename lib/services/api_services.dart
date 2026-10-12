@@ -1,4 +1,9 @@
 import 'dart:convert';
+
+<<<<<<< HEAD
+=======
+import 'package:flutter/foundation.dart';
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -6,9 +11,56 @@ class ApiService {
   // BACKEND URL
   // =========================================================
 
+<<<<<<< HEAD
+  static const String baseUrl =
+      "https://resqai-production-a6af.up.railway.app";
+
+  // =========================================================
+  // INCIDENT REPORTS
+  // =========================================================
+
+  static Future<http.Response> submitIncidentReport({
+    required String firebaseIdToken,
+    required String type,
+    required String severity,
+    required double latitude,
+    required double longitude,
+    required double accuracyM,
+    required String locationText,
+    required String description,
+    required List<String> photoUrls,
+  }) async {
+    return http.post(
+      Uri.parse("$baseUrl/incident-reports"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $firebaseIdToken",
+      },
+      body: jsonEncode({
+        "type": type,
+        "severity": severity,
+        "latitude": latitude,
+        "longitude": longitude,
+        "accuracyM": accuracyM,
+        "locationText": locationText,
+        "description": description,
+        "photoUrls": photoUrls,
+      }),
+    );
+=======
   static String get baseUrl {
-  return "https://resqai-production-a6af.up.railway.app";
-}
+    if (kIsWeb) {
+      return "http://localhost:5000";
+    }
+
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      return "http://10.0.2.2:5000";
+    }
+
+    return "http://localhost:5000";
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
+  }
+
   // =========================================================
   // REGISTER
   // =========================================================
@@ -21,7 +73,15 @@ class ApiService {
   ) async {
     return await http.post(
       Uri.parse("$baseUrl/register"),
+
+<<<<<<< HEAD
+      headers: {
+        "Content-Type": "application/json",
+      },
+=======
       headers: {"Content-Type": "application/json"},
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
+
       body: jsonEncode({
         "fullname": fullname,
         "email": email,
@@ -35,11 +95,29 @@ class ApiService {
   // LOGIN
   // =========================================================
 
+<<<<<<< HEAD
+  static Future<http.Response> login(
+    String email,
+    String password,
+  ) async {
+    return await http.post(
+      Uri.parse("$baseUrl/login"),
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: jsonEncode({
+        "email": email,
+        "password": password,
+      }),
+=======
   static Future<http.Response> login(String email, String password) async {
     return await http.post(
       Uri.parse("$baseUrl/login"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"email": email, "password": password}),
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
     );
   }
 
@@ -47,23 +125,27 @@ class ApiService {
   // CHECK PHONE
   // =========================================================
 
+<<<<<<< HEAD
+  static Future<http.Response> checkPhone(
+    String phone,
+  ) async {
+    return await http.post(
+      Uri.parse("$baseUrl/check-phone"),
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: jsonEncode({
+        "phone": phone,
+      }),
+=======
   static Future<http.Response> checkPhone(String phone) async {
     return await http.post(
       Uri.parse("$baseUrl/check-phone"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"phone": phone}),
-    );
-  }
-
-  // =========================================================
-  // FORGOT PASSWORD
-  // =========================================================
-
-  static Future<http.Response> forgotPassword(String email) async {
-    return await http.post(
-      Uri.parse("$baseUrl/forgot-password"),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"email": email}),
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
     );
   }
 
@@ -81,6 +163,19 @@ class ApiService {
       headers: {
         "Content-Type": "application/json",
         // Firebase authentication proof
+<<<<<<< HEAD
+        "Authorization":
+            "Bearer $firebaseIdToken",
+      },
+
+      body: jsonEncode({
+        "phone": phone,
+        "password": newPassword,
+      }),
+    );
+  }
+}
+=======
         "Authorization": "Bearer $firebaseIdToken",
       },
       body: jsonEncode({"phone": phone, "password": newPassword}),
@@ -103,3 +198,4 @@ class ApiService {
         .timeout(const Duration(seconds: 20));
   }
 }
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0

@@ -33,6 +33,12 @@ migrate_working_dir/
 /build/
 /coverage/
 
+<<<<<<< HEAD
+# Backend secrets
+/backend/.env
+
+=======
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
 # Symbolication related
 app.*.symbols
 
@@ -43,3 +49,13 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+<<<<<<< HEAD
+=======
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
