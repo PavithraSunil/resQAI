@@ -101,7 +101,13 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const DashboardPage(),
+            builder: (context) {
+              final account = data["data"];
+              final userName = account is Map<String, dynamic>
+                  ? account["fullname"] as String?
+                  : null;
+              return DashboardPage(userName: userName ?? "User");
+            },
           ),
         );
       }

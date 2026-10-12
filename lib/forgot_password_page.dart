@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
+import 'services/api_services.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -38,11 +39,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     });
 
     try {
-      final response = await http.post(
-        Uri.parse("http://localhost:5000/forgot-password"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"email": email}),
-      );
+      final response = await ApiService.forgotPassword(email);
 
       developer.log("Forgot password response: ${response.statusCode}");
 

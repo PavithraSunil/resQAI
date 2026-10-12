@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'dashboard_page.dart';
+import 'admin_dashboard.dart';
 import 'services/api_services.dart';
 
 class AdminLoginPage extends StatefulWidget {
@@ -34,7 +34,9 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
       if (response.statusCode == 200 && data['success'] == true) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const DashboardPage(userName: 'Admin')),
+          MaterialPageRoute(
+            builder: (_) => const AdminDashboardPage(userName: 'Admin'),
+          ),
         );
       } else {
         _showMessage(data['message']?.toString() ?? 'Invalid admin credentials.');
@@ -122,7 +124,9 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => const DashboardPage(userName: 'Admin preview'),
+                                    builder: (_) => const AdminDashboardPage(
+                                      userName: 'Admin preview',
+                                    ),
                                   ),
                                 );
                               },

@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 
 import 'services/api_services.dart';
 
-class DashboardPage extends StatefulWidget {
+class AdminDashboardPage extends StatefulWidget {
   final String userName;
-  const DashboardPage({super.key, this.userName = 'Admin'});
+  const AdminDashboardPage({super.key, this.userName = 'Admin'});
   @override
-  State<DashboardPage> createState() => _DashboardPageState();
+  State<AdminDashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _DashboardPageState extends State<AdminDashboardPage> {
   int _selectedIndex = 0;
   bool _notificationsOpen = false;
   bool _refreshing = false;

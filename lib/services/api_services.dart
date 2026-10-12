@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -9,17 +7,8 @@ class ApiService {
   // =========================================================
 
   static String get baseUrl {
-    if (kIsWeb) {
-      return "http://localhost:5000";
-    }
-
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      return "http://10.0.2.2:5000";
-    }
-
-    return "http://localhost:5000";
-  }
-
+  return "https://resqai-production-a6af.up.railway.app";
+}
   // =========================================================
   // REGISTER
   // =========================================================
@@ -32,9 +21,7 @@ class ApiService {
   ) async {
     return await http.post(
       Uri.parse("$baseUrl/register"),
-
       headers: {"Content-Type": "application/json"},
-
       body: jsonEncode({
         "fullname": fullname,
         "email": email,
@@ -51,9 +38,7 @@ class ApiService {
   static Future<http.Response> login(String email, String password) async {
     return await http.post(
       Uri.parse("$baseUrl/login"),
-
       headers: {"Content-Type": "application/json"},
-
       body: jsonEncode({"email": email, "password": password}),
     );
   }
@@ -65,10 +50,20 @@ class ApiService {
   static Future<http.Response> checkPhone(String phone) async {
     return await http.post(
       Uri.parse("$baseUrl/check-phone"),
-
       headers: {"Content-Type": "application/json"},
-
       body: jsonEncode({"phone": phone}),
+    );
+  }
+
+  // =========================================================
+  // FORGOT PASSWORD
+  // =========================================================
+
+  static Future<http.Response> forgotPassword(String email) async {
+    return await http.post(
+      Uri.parse("$baseUrl/forgot-password"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"email": email}),
     );
   }
 
@@ -83,14 +78,11 @@ class ApiService {
   ) async {
     return await http.post(
       Uri.parse("$baseUrl/reset-password"),
-
       headers: {
         "Content-Type": "application/json",
-
         // Firebase authentication proof
         "Authorization": "Bearer $firebaseIdToken",
       },
-
       body: jsonEncode({"phone": phone, "password": newPassword}),
     );
   }
