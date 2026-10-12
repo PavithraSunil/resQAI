@@ -4,6 +4,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const authRouter = require("./routes/auth");
+const landslideRouter = require("./routes/landslide");
 const pool = require("./db");
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Existing authentication routes
 app.use(authRouter);
+app.use(landslideRouter);
 
 // Health check
 app.get("/", (req, res) => {
