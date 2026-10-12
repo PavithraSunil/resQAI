@@ -2,6 +2,7 @@
 
 A new Flutter project.
 
+<<<<<<< HEAD
 ## Incident report database
 
 Incident reports are sent from the Flutter app to the backend's
@@ -22,6 +23,8 @@ Keep these values on the backend; do not add them to Flutter code or commit
 them. Incident photos are still uploaded to Firebase Storage, and their
 download URLs are stored with the report in Neon.
 
+=======
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
 ## Getting Started
 
 This project is a starting point for a Flutter application.

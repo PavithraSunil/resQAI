@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+<<<<<<< HEAD
+=======
+import 'package:flutter/foundation.dart';
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -7,6 +11,7 @@ class ApiService {
   // BACKEND URL
   // =========================================================
 
+<<<<<<< HEAD
   static const String baseUrl =
       "https://resqai-production-a6af.up.railway.app";
 
@@ -42,6 +47,18 @@ class ApiService {
         "photoUrls": photoUrls,
       }),
     );
+=======
+  static String get baseUrl {
+    if (kIsWeb) {
+      return "http://localhost:5000";
+    }
+
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      return "http://10.0.2.2:5000";
+    }
+
+    return "http://localhost:5000";
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
   }
 
   // =========================================================
@@ -57,9 +74,13 @@ class ApiService {
     return await http.post(
       Uri.parse("$baseUrl/register"),
 
+<<<<<<< HEAD
       headers: {
         "Content-Type": "application/json",
       },
+=======
+      headers: {"Content-Type": "application/json"},
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
 
       body: jsonEncode({
         "fullname": fullname,
@@ -74,6 +95,7 @@ class ApiService {
   // LOGIN
   // =========================================================
 
+<<<<<<< HEAD
   static Future<http.Response> login(
     String email,
     String password,
@@ -89,6 +111,15 @@ class ApiService {
         "email": email,
         "password": password,
       }),
+=======
+  static Future<http.Response> login(String email, String password) async {
+    return await http.post(
+      Uri.parse("$baseUrl/login"),
+
+      headers: {"Content-Type": "application/json"},
+
+      body: jsonEncode({"email": email, "password": password}),
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
     );
   }
 
@@ -96,6 +127,7 @@ class ApiService {
   // CHECK PHONE
   // =========================================================
 
+<<<<<<< HEAD
   static Future<http.Response> checkPhone(
     String phone,
   ) async {
@@ -109,6 +141,15 @@ class ApiService {
       body: jsonEncode({
         "phone": phone,
       }),
+=======
+  static Future<http.Response> checkPhone(String phone) async {
+    return await http.post(
+      Uri.parse("$baseUrl/check-phone"),
+
+      headers: {"Content-Type": "application/json"},
+
+      body: jsonEncode({"phone": phone}),
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
     );
   }
 
@@ -128,6 +169,7 @@ class ApiService {
         "Content-Type": "application/json",
 
         // Firebase authentication proof
+<<<<<<< HEAD
         "Authorization":
             "Bearer $firebaseIdToken",
       },
@@ -139,3 +181,28 @@ class ApiService {
     );
   }
 }
+=======
+        "Authorization": "Bearer $firebaseIdToken",
+      },
+
+      body: jsonEncode({"phone": phone, "password": newPassword}),
+    );
+  }
+
+  // =========================================================
+  // LANDSLIDE PREDICTION
+  // =========================================================
+
+  static Future<http.Response> predictLandslide(
+    Map<String, double> features,
+  ) async {
+    return http
+        .post(
+          Uri.parse("$baseUrl/api/landslide/predict"),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(features),
+        )
+        .timeout(const Duration(seconds: 20));
+  }
+}
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0

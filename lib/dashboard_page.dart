@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:resqai/login_page.dart';
@@ -752,3 +753,6 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 }
+=======
+export 'admin_dashboard.dart';
+>>>>>>> b166b4d084212c29548822a68eddf63402d147b0
