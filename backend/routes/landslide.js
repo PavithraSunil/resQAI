@@ -1,0 +1,30 @@
+
+const express = require("express");
+const axios = require("axios");
+
+const router = express.Router();
+
+router.post("/api/landslide/predict", async (req, res) => {
+    try {
+        const response = await axios.post(
+            "http://127.0.0.1:5001/predict",
+            req.body
+        );
+
+        res.status(200).json(response.data);
+    } catch (error) {
+        if (error.response) {
+            return res
+                .status(error.response.status)
+                .json(error.response.data);
+        }
+
+        console.error("Landslide prediction connection failed:", error.message);
+
+        res.status(503).json({
+            error: "Landslide prediction service is unavailable."
+        });
+    }
+});
+
+module.exports = router;

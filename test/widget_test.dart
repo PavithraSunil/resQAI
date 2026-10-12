@@ -1,20 +1,118 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
-import 'package:flutter_test/flutter_test.dart';
+class ApiService {
+  // Backend URL
+  static String get baseUrl {
+    if (kIsWeb) {
+      return 'http://localhost:5000';
+    }
 
-import 'package:resqai/main.dart';
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      return 'http://10.0.2.2:5000';
+    }
 
-void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const ResQAIApp());
+    return 'https://resqai-production-a6af.up.railway.app';
+  }
 
-    expect(find.text('ResQAI'), findsOneWidget);
-    expect(find.text('Get Started'), findsOneWidget);
-  });
+  // =========================================================
+  // REGISTER
+  // =========================================================
+
+  static Future<http.Response> register(
+    String fullname,
+    String email,
+    String password,
+    String phone,
+  ) async {
+    return await http.post(
+      Uri.parse('$baseUrl/register'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'fullname': fullname,
+        'email': email,
+        'password': password,
+        'phone': phone,
+      }),
+    );
+  }
+
+  // =========================================================
+  // LOGIN
+  // =========================================================
+
+  static Future<http.Response> login(
+    String email,
+    String password,
+  ) async {
+    return await http.post(
+      Uri.parse('$baseUrl/login'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'email': email,
+        'password': password,
+      }),
+    );
+  }
+
+  // =========================================================
+  // CHECK PHONE
+  // =========================================================
+
+  static Future<http.Response> checkPhone(String phone) async {
+    return await http.post(
+      Uri.parse('$baseUrl/check-phone'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'phone': phone,
+      }),
+    );
+  }
+
+  // =========================================================
+  // RESET PASSWORD
+  // =========================================================
+
+  static Future<http.Response> resetPassword(
+    String phone,
+    String newPassword,
+    String firebaseIdToken,
+  ) async {
+    return await http.post(
+      Uri.parse('$baseUrl/reset-password'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $firebaseIdToken',
+      },
+      body: jsonEncode({
+        'phone': phone,
+        'password': newPassword,
+      }),
+    );
+  }
+
+  // =========================================================
+  // LANDSLIDE PREDICTION
+  // =========================================================
+
+  static Future<http.Response> predictLandslide(
+    Map<String, double> features,
+  ) async {
+    return http
+        .post(
+          Uri.parse('$baseUrl/api/landslide/predict'),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(features),
+        )
+        .timeout(const Duration(seconds: 20));
+  }
 }
