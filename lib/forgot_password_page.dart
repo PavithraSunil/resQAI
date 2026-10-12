@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -7,14 +8,11 @@ class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
 
   @override
-  State<ForgotPasswordPage> createState() =>
-      _ForgotPasswordPageState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _ForgotPasswordPageState
-    extends State<ForgotPasswordPage> {
-  final TextEditingController emailController =
-      TextEditingController();
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  final TextEditingController emailController = TextEditingController();
 
   bool isLoading = false;
 
@@ -23,16 +21,14 @@ class _ForgotPasswordPageState
   // =========================================================
 
   Future<void> sendResetEmail() async {
-    final email =
-        emailController.text.trim().toLowerCase();
+    final email = emailController.text.trim().toLowerCase();
 
     if (email.isEmpty) {
       showMessage("Please enter your email address.");
       return;
     }
 
-    if (!email.contains("@") ||
-        !email.contains(".")) {
+    if (!email.contains("@") || !email.contains(".")) {
       showMessage("Please enter a valid email address.");
       return;
     }
@@ -43,24 +39,14 @@ class _ForgotPasswordPageState
 
     try {
       final response = await http.post(
-        Uri.parse(
-          "http://localhost:5000/forgot-password",
-        ),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: jsonEncode({
-          "email": email,
-        }),
+        Uri.parse("http://localhost:5000/forgot-password"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"email": email}),
       );
 
-      print(
-        "Forgot password response: ${response.statusCode}",
-      );
+      developer.log("Forgot password response: ${response.statusCode}");
 
-      print(
-        "Forgot password body: ${response.body}",
-      );
+      developer.log("Forgot password body: ${response.body}");
 
       final data = jsonDecode(response.body);
 
@@ -70,16 +56,10 @@ class _ForgotPasswordPageState
         isLoading = false;
       });
 
-      if (response.statusCode == 200 &&
-          data["success"] == true) {
-        showMessage(
-          "Password reset link has been sent to your email.",
-        );
+      if (response.statusCode == 200 && data["success"] == true) {
+        showMessage("Password reset link has been sent to your email.");
       } else {
-        showMessage(
-          data["message"] ??
-              "Unable to send reset email.",
-        );
+        showMessage(data["message"] ?? "Unable to send reset email.");
       }
     } catch (e) {
       if (!mounted) return;
@@ -88,7 +68,7 @@ class _ForgotPasswordPageState
         isLoading = false;
       });
 
-      print("Forgot password error: $e");
+      developer.log("Forgot password error: $e");
 
       showMessage(
         "Connection error.\nMake sure the Node.js backend is running.",
@@ -103,11 +83,9 @@ class _ForgotPasswordPageState
   void showMessage(String message) {
     if (!mounted) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   // =========================================================
@@ -130,9 +108,7 @@ class _ForgotPasswordPageState
       backgroundColor: Colors.white,
 
       appBar: AppBar(
-        title: const Text(
-          "Forgot Password",
-        ),
+        title: const Text("Forgot Password"),
         backgroundColor: Colors.red,
         foregroundColor: Colors.white,
       ),
@@ -143,25 +119,18 @@ class _ForgotPasswordPageState
 
           child: Column(
             children: [
-
               const SizedBox(height: 50),
 
               // =================================================
               // ICON
               // =================================================
-
-              const Icon(
-                Icons.lock_reset,
-                color: Colors.red,
-                size: 90,
-              ),
+              const Icon(Icons.lock_reset, color: Colors.red, size: 90),
 
               const SizedBox(height: 25),
 
               // =================================================
               // TITLE
               // =================================================
-
               const Text(
                 "Forgot Password?",
                 style: TextStyle(
@@ -176,10 +145,7 @@ class _ForgotPasswordPageState
               const Text(
                 "Enter your registered email address",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 17,
-                  color: Colors.black87,
-                ),
+                style: TextStyle(fontSize: 17, color: Colors.black87),
               ),
 
               const SizedBox(height: 40),
@@ -187,23 +153,18 @@ class _ForgotPasswordPageState
               // =================================================
               // EMAIL
               // =================================================
-
               TextField(
                 controller: emailController,
-                keyboardType:
-                    TextInputType.emailAddress,
+                keyboardType: TextInputType.emailAddress,
 
                 decoration: InputDecoration(
                   labelText: "Email Address",
                   hintText: "example@gmail.com",
 
-                  prefixIcon: const Icon(
-                    Icons.email,
-                  ),
+                  prefixIcon: const Icon(Icons.email),
 
                   border: OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
               ),
@@ -213,7 +174,6 @@ class _ForgotPasswordPageState
               // =================================================
               // SEND RESET LINK BUTTON
               // =================================================
-
               SizedBox(
                 width: double.infinity,
                 height: 55,
@@ -223,34 +183,26 @@ class _ForgotPasswordPageState
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
 
-                    shape:
-                        RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
 
-                  onPressed:
-                      isLoading
-                          ? null
-                          : sendResetEmail,
+                  onPressed: isLoading ? null : sendResetEmail,
 
                   child: isLoading
                       ? const SizedBox(
                           height: 25,
                           width: 25,
 
-                          child:
-                              CircularProgressIndicator(
+                          child: CircularProgressIndicator(
                             color: Colors.white,
                             strokeWidth: 3,
                           ),
                         )
                       : const Text(
                           "Send Reset Link",
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
+                          style: TextStyle(fontSize: 18),
                         ),
                 ),
               ),
@@ -260,15 +212,11 @@ class _ForgotPasswordPageState
               // =================================================
               // INFORMATION
               // =================================================
-
               const Text(
                 "A password reset link will be sent to your "
                 "registered email address.",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 14,
-                ),
+                style: TextStyle(color: Colors.black54, fontSize: 14),
               ),
 
               const SizedBox(height: 30),
@@ -276,15 +224,12 @@ class _ForgotPasswordPageState
               // =================================================
               // BACK TO LOGIN
               // =================================================
-
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
 
-                child: const Text(
-                  "Back to Login",
-                ),
+                child: const Text("Back to Login"),
               ),
             ],
           ),

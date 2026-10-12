@@ -1,23 +1,19 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  // =========================================================
-  // BACKEND URL
-  // =========================================================
-
+  // Backend URL
   static String get baseUrl {
     if (kIsWeb) {
-      return "http://localhost:5000";
+      return 'http://localhost:5000';
     }
 
     if (defaultTargetPlatform == TargetPlatform.android) {
-      return "http://10.0.2.2:5000";
+      return 'http://10.0.2.2:5000';
     }
 
-    return "http://localhost:5000";
+    return 'https://resqai-production-a6af.up.railway.app';
   }
 
   // =========================================================
@@ -31,15 +27,15 @@ class ApiService {
     String phone,
   ) async {
     return await http.post(
-      Uri.parse("$baseUrl/register"),
-
-      headers: {"Content-Type": "application/json"},
-
+      Uri.parse('$baseUrl/register'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: jsonEncode({
-        "fullname": fullname,
-        "email": email,
-        "password": password,
-        "phone": phone,
+        'fullname': fullname,
+        'email': email,
+        'password': password,
+        'phone': phone,
       }),
     );
   }
@@ -48,13 +44,19 @@ class ApiService {
   // LOGIN
   // =========================================================
 
-  static Future<http.Response> login(String email, String password) async {
+  static Future<http.Response> login(
+    String email,
+    String password,
+  ) async {
     return await http.post(
-      Uri.parse("$baseUrl/login"),
-
-      headers: {"Content-Type": "application/json"},
-
-      body: jsonEncode({"email": email, "password": password}),
+      Uri.parse('$baseUrl/login'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'email': email,
+        'password': password,
+      }),
     );
   }
 
@@ -64,11 +66,13 @@ class ApiService {
 
   static Future<http.Response> checkPhone(String phone) async {
     return await http.post(
-      Uri.parse("$baseUrl/check-phone"),
-
-      headers: {"Content-Type": "application/json"},
-
-      body: jsonEncode({"phone": phone}),
+      Uri.parse('$baseUrl/check-phone'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'phone': phone,
+      }),
     );
   }
 
@@ -82,16 +86,15 @@ class ApiService {
     String firebaseIdToken,
   ) async {
     return await http.post(
-      Uri.parse("$baseUrl/reset-password"),
-
+      Uri.parse('$baseUrl/reset-password'),
       headers: {
-        "Content-Type": "application/json",
-
-        // Firebase authentication proof
-        "Authorization": "Bearer $firebaseIdToken",
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $firebaseIdToken',
       },
-
-      body: jsonEncode({"phone": phone, "password": newPassword}),
+      body: jsonEncode({
+        'phone': phone,
+        'password': newPassword,
+      }),
     );
   }
 
@@ -104,8 +107,10 @@ class ApiService {
   ) async {
     return http
         .post(
-          Uri.parse("$baseUrl/api/landslide/predict"),
-          headers: {"Content-Type": "application/json"},
+          Uri.parse('$baseUrl/api/landslide/predict'),
+          headers: {
+            'Content-Type': 'application/json',
+          },
           body: jsonEncode(features),
         )
         .timeout(const Duration(seconds: 20));
