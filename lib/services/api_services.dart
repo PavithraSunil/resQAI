@@ -1,25 +1,13 @@
+
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  // Backend URL
-  static String get baseUrl {
-    if (kIsWeb) {
-      return 'http://localhost:5000';
-    }
+  // Deployed ResQAI backend
+  static const String baseUrl =
+      'https://resqai-production-a6af.up.railway.app';
 
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      return 'http://10.0.2.2:5000';
-    }
-
-    return 'https://resqai-production-a6af.up.railway.app';
-  }
-
-  // =========================================================
   // REGISTER
-  // =========================================================
-
   static Future<http.Response> register(
     String fullname,
     String email,
@@ -40,10 +28,7 @@ class ApiService {
     );
   }
 
-  // =========================================================
   // LOGIN
-  // =========================================================
-
   static Future<http.Response> login(
     String email,
     String password,
@@ -60,10 +45,7 @@ class ApiService {
     );
   }
 
-  // =========================================================
   // CHECK PHONE
-  // =========================================================
-
   static Future<http.Response> checkPhone(String phone) async {
     return await http.post(
       Uri.parse('$baseUrl/check-phone'),
@@ -76,10 +58,7 @@ class ApiService {
     );
   }
 
-  // =========================================================
   // RESET PASSWORD
-  // =========================================================
-
   static Future<http.Response> resetPassword(
     String phone,
     String newPassword,
@@ -98,14 +77,11 @@ class ApiService {
     );
   }
 
-  // =========================================================
   // LANDSLIDE PREDICTION
-  // =========================================================
-
   static Future<http.Response> predictLandslide(
     Map<String, double> features,
   ) async {
-    return http
+    return await http
         .post(
           Uri.parse('$baseUrl/api/landslide/predict'),
           headers: {
