@@ -13,8 +13,7 @@ class ApiService {
       return "http://localhost:5000";
     }
 
-    if (defaultTargetPlatform ==
-        TargetPlatform.android) {
+    if (defaultTargetPlatform == TargetPlatform.android) {
       return "http://10.0.2.2:5000";
     }
 
@@ -34,9 +33,7 @@ class ApiService {
     return await http.post(
       Uri.parse("$baseUrl/register"),
 
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: {"Content-Type": "application/json"},
 
       body: jsonEncode({
         "fullname": fullname,
@@ -51,21 +48,13 @@ class ApiService {
   // LOGIN
   // =========================================================
 
-  static Future<http.Response> login(
-    String email,
-    String password,
-  ) async {
+  static Future<http.Response> login(String email, String password) async {
     return await http.post(
       Uri.parse("$baseUrl/login"),
 
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: {"Content-Type": "application/json"},
 
-      body: jsonEncode({
-        "email": email,
-        "password": password,
-      }),
+      body: jsonEncode({"email": email, "password": password}),
     );
   }
 
@@ -73,19 +62,13 @@ class ApiService {
   // CHECK PHONE
   // =========================================================
 
-  static Future<http.Response> checkPhone(
-    String phone,
-  ) async {
+  static Future<http.Response> checkPhone(String phone) async {
     return await http.post(
       Uri.parse("$baseUrl/check-phone"),
 
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: {"Content-Type": "application/json"},
 
-      body: jsonEncode({
-        "phone": phone,
-      }),
+      body: jsonEncode({"phone": phone}),
     );
   }
 
@@ -105,14 +88,26 @@ class ApiService {
         "Content-Type": "application/json",
 
         // Firebase authentication proof
-        "Authorization":
-            "Bearer $firebaseIdToken",
+        "Authorization": "Bearer $firebaseIdToken",
       },
 
-      body: jsonEncode({
-        "phone": phone,
-        "password": newPassword,
-      }),
+      body: jsonEncode({"phone": phone, "password": newPassword}),
     );
+  }
+
+  // =========================================================
+  // LANDSLIDE PREDICTION
+  // =========================================================
+
+  static Future<http.Response> predictLandslide(
+    Map<String, double> features,
+  ) async {
+    return http
+        .post(
+          Uri.parse("$baseUrl/api/landslide/predict"),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(features),
+        )
+        .timeout(const Duration(seconds: 20));
   }
 }
