@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "997374089352",
+    "project_id": "resqai-caf4a",
+    "storage_bucket": "resqai-caf4a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997374089352:android:ae458a3bda34206b3ae73d",
+        "android_client_info": {
+          "package_name": "com.example.resqai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDj5K5ZYLP566JiOkAnjRse1gj_YtN1jyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
